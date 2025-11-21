@@ -2,9 +2,8 @@ const express = require("express");
 
 const app = express();
 
-app.get("/user/:id", (req, res) => {
-  console.log(req.params);
-  res.send("Hello from the server!");
+app.get("/user", (req, res) => {
+  res.send("User Data Sent");
 });
 
 app.listen(3000, () => {

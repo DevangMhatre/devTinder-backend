@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 // Connects to Cluster
 // * mongoose.connect() returns a promise so we do to async/await
 const connectDB = async () => {
-  await mongoose.connect(
-    "mongodb+srv://devangmhatre396:nbtKi3xuaUX7W6A4@practice.rr4tnp6.mongodb.net/devTinder"
-  );
+  await mongoose.connect(process.env.MONGO_URI);
 };
 
 module.exports = connectDB;

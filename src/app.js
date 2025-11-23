@@ -1,9 +1,11 @@
 const express = require("express");
+require("dotenv").config();
 const connectDB = require("./config/database");
 
 const User = require("./models/user");
 
 const app = express();
+const PORT = process.env.PORT;
 
 app.post("/signup", async (req, res) => {
   const userObj = {
@@ -30,8 +32,8 @@ app.post("/signup", async (req, res) => {
 connectDB()
   .then(() => {
     console.log("Database Connected!");
-    app.listen(3000, () => {
-      console.log("App listening on port 3000...");
+    app.listen(PORT, () => {
+      console.log(`Server running at port ${PORT}`);
     });
   })
   .catch((err) => {

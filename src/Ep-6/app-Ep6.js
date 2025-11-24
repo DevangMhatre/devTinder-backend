@@ -7,15 +7,20 @@ const User = require("./models/user");
 const app = express();
 const PORT = process.env.PORT;
 
-// ! Converts the incoming JSON to JS Object
-app.use(express.json());
-
 app.post("/signup", async (req, res) => {
-  // console.log(req.body);
+  const userObj = {
+    firstName: "Virat",
+    lastName: "Kohli",
+    emailId: "virat@gmail.com",
+    password: "virat@123",
+  };
 
-  const user = new User(req.body);
+  // ! Creates a instance of the user model
+  const user = new User(userObj);
 
+  // ! Always use try-catch block while doing DB Operations
   try {
+    // ! This will save our instance in our database
     await user.save();
     res.send("Successful");
   } catch (err) {
@@ -23,6 +28,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+// ! Always first make sure that Database is connected first then only start Listening to the Server
 connectDB()
   .then(() => {
     console.log("Database Connected!");

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 // ! EP-8 Data Sanitization
 const userSchema = new mongoose.Schema(
@@ -20,11 +21,20 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       trim: true, // ! Removes extra spaces
+      validate(emailId) {
+        if (!validator.isEmail(emailId)) {
+          throw new Error("Invalid Email Address.");
+        }
+      },
     },
     password: {
       type: String,
       required: true,
-      minLength: 8,
+      validate(password) {
+        if (!validator.isStrongPassword(password)) {
+          throw new Error("Password not strong enough.");
+        }
+      },
     },
     age: {
       type: Number,
@@ -41,6 +51,11 @@ const userSchema = new mongoose.Schema(
     },
     photoURL: {
       type: String,
+      validate(url) {
+        if (!validator.isURL(url)) {
+          throw new Error("Invalid Photo URL.");
+        }
+      },
     },
     about: {
       type: String,

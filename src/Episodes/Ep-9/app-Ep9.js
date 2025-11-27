@@ -1,8 +1,6 @@
 const express = require("express");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
-const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
 
 const connectDB = require("./config/database");
 const User = require("./models/user");
@@ -10,12 +8,9 @@ const validateSignUpData = require("./utils/validation");
 
 const app = express();
 const PORT = process.env.PORT;
-const SECRET_KEY = process.env.SECRET_KEY;
 
 // ! Converts the incoming JSON to JS Object
 app.use(express.json());
-// ! Parse the cookie
-app.use(cookieParser());
 
 // * Dynamic Data - Signup API
 app.post("/signup", async (req, res) => {
@@ -44,7 +39,6 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-// ! COOKIES!
 // * Login API
 app.post("/login", async (req, res) => {
   try {
@@ -59,37 +53,10 @@ app.post("/login", async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (isPasswordValid) {
-      const token = jwt.sign({ _id: user._id }, SECRET_KEY);
-
-      res.cookie("token", token);
       res.send("Login Succesfull!");
     } else {
       throw new Error("Invalid Credentials!");
     }
-  } catch (err) {
-    res.status(400).send("ERROR: " + err.message);
-  }
-});
-
-// * Profile API
-app.get("/profile", async (req, res) => {
-  try {
-    const { token } = req.cookies;
-    if (!token) {
-      throw new Error("Invalid Token.");
-    }
-
-    const decodedToken = await jwt.verify(token, SECRET_KEY);
-    // console.log(decodedToken);
-    // console.log(cookies);
-
-    const { _id } = decodedToken;
-    const user = await User.findById(_id);
-    if (!user) {
-      throw new Error("User does not exist.");
-    }
-
-    res.send(user);
   } catch (err) {
     res.status(400).send("ERROR: " + err.message);
   }

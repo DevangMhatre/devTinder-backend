@@ -2,7 +2,7 @@ const express = require("express");
 
 const app = express();
 
-const { adminAuth, userAuth } = require("../middlewares/auth");
+const { adminAuth, userAuth } = require("./middlewares/auth");
 
 // ! Middlewares makes things easier for us to understand and even make less code
 

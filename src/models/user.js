@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcrypt");
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
 // ! EP-8 Data Sanitization
 const userSchema = new mongoose.Schema(
@@ -72,6 +75,25 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.methods.getJWT = async function () {
+  const user = this;
+  const token = await jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
+    expiresIn: "7d",
+  });
+
+  return token;
+};
+
+userSchema.methods.verifyPassword = async function (passwordInputByUser) {
+  const user = this;
+  const isPasswordValid = await bcrypt.compare(
+    passwordInputByUser,
+    user.password
+  );
+
+  return isPasswordValid;
+};
 
 // * Always start with Capital letter when defininig the model name
 const User = mongoose.model("User", userSchema);

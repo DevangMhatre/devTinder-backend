@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 
 const connectDB = require("./config/database");
-const User = require("./models/user");
+const User = require("../../models/user");
 const validateSignUpData = require("./utils/validation");
 const userAuth = require("./middlewares/auth");
 

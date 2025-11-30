@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 
 const authRouter = express.Router();
-const validateSignUpData = require("../utils/validation");
+const { validateSignUpData } = require("../utils/validation");
 const User = require("../models/user");
 
 // * Dynamic Data - Signup API
@@ -59,6 +59,14 @@ authRouter.post("/login", async (req, res) => {
   } catch (err) {
     res.status(400).send("ERROR: " + err.message);
   }
+});
+
+// * Logout API
+authRouter.post("/logout", async (req, res) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+  });
+  res.send("Logout Successful!");
 });
 
 module.exports = authRouter;

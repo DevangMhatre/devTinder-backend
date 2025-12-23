@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
     firstName: {
       type: String,
       required: true,
-      minLength: 3,
+      minLength: 2,
       maxLength: 50,
     },
     lastName: {
@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       // * Doesn't work for existing documents by default
       validate(value) {
-        if (!["male", "female", "others"].includes(value)) {
+        if (!["Male", "Female", "Others"].includes(value)) {
           throw new Error("Gender data is not valid.");
         }
       },

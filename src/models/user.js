@@ -55,6 +55,8 @@ const userSchema = new mongoose.Schema(
     },
     photoURL: {
       type: String,
+      default:
+        "https://static.vecteezy.com/system/resources/previews/024/983/914/non_2x/simple-user-default-icon-free-png.png",
       validate(url) {
         if (!validator.isURL(url)) {
           throw new Error("Invalid Photo URL.");

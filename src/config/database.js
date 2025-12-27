@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "ENV_FILENAME" });
+require("dotenv").config();
 const mongoose = require("mongoose");
 
 // Connects to Cluster
